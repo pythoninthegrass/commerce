@@ -1,4 +1,4 @@
-{% extends "auctions/layout.html" %}
+{% extends "layout.html" %}
 {% load bootstrap5 %}
 
 {% block title %}
@@ -18,5 +18,15 @@
     <input class="create" type="submit" name="create" placeholder="Submit">
     </form>
   </div><br>
+  {% comment %} <form action="" method="post">
+    {% csrf_token %}
+    <label for="create">Enter text: </label>
+    <input
+      id="create"
+      type="text"
+      name="name_field"
+      value="Default text." />
+    <input type="submit" value="OK" />
+  </form> {% endcomment %}
   <a href="/">Back</a>
 {% endblock %}

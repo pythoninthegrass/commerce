@@ -1,14 +1,39 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from .forms import *
 from .models import User
 
 
+def listing(request, listing_id):
+    listing = Listing.objects.get(id=listing_id)
+    # display starting bid as currency
+    currency = "${:,.2f}".format(listing.starting_bid)
+    listing.starting_bid = currency
+    return render(request, "listing.html", {
+        "listing": listing,
+    })
+
+
 def index(request):
-    return render(request, "auctions/index.html")
+    listings = Listing.objects.all()
+
+    # clean up image urls
+    for listing in listings:
+        if listing.image_url == "":
+            listing.image_url = "https://via.placeholder.com/150"
+
+    # convert starting bid to currency
+    for listing in listings:
+        currency = "${:,.2f}".format(listing.starting_bid)
+        listing.starting_bid = currency
+
+
+    return render(request, "index.html", {
+        "listings": listings,
+    })
 
 
 def login_view(request):
@@ -24,11 +49,11 @@ def login_view(request):
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
         else:
-            return render(request, "auctions/login.html", {
+            return render(request, "login.html", {
                 "message": "Invalid username and/or password."
             })
     else:
-        return render(request, "auctions/login.html")
+        return render(request, "login.html")
 
 
 def logout_view(request):
@@ -45,7 +70,7 @@ def register(request):
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
         if password != confirmation:
-            return render(request, "auctions/register.html", {
+            return render(request, "register.html", {
                 "message": "Passwords must match."
             })
 
@@ -54,29 +79,47 @@ def register(request):
             user = User.objects.create_user(username, email, password)
             user.save()
         except IntegrityError:
-            return render(request, "auctions/register.html", {
+            return render(request, "register.html", {
                 "message": "Username already taken."
             })
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
-        return render(request, "auctions/register.html")
+        return render(request, "register.html")
 
 
 def categories(request):
-    return render(request, "auctions/categories.html")
+    return render(request, "categories.html")
 
 
 def watchlist(request):
-    return render(request, "auctions/watchlist.html")
+    return render(request, "watchlist.html")
 
 
 def create_listing(request):
-    # TODO: debug `or None` showing form errors before anything has been submitted
-    form = CreateListingForm(request.POST or None)
-    form.user = request.user
-    if form.is_valid():
-        form.save()
-        return HttpResponseRedirect(reverse("index"))
+    user = request.user
+    if request.method == "POST":
+        form = CreateListingForm(request.POST)
+        if form.is_valid():
+            listing = form.cleaned_data
+            listing = Listing.objects.create(
+                title=listing['title'],
+                description=listing['description'],
+                starting_bid=listing['starting_bid'],
+                image_url=listing['image_url'],
+                category=listing['category'],
+                user=user
+            )
+            return HttpResponseRedirect('/listing/' + str(listing.id))
+    else:
+        form = CreateListingForm()
 
-    return render(request, "auctions/create.html", {"form": form})
+    return render(request, 'create.html', {'form': form})
+
+
+def error404(request, exception):
+    return render(
+        request,
+        "404.html",
+        status=404
+    )

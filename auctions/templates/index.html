@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% load bootstrap5 %}
+
+{% block title %}
+  Active Listings
+{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <h1>Active Listings</h1>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Image</th>
+        <th scope="col">Price</th>
+        <th scope="col">Description</th>
+        {% comment %} <th scope="col">Bids</th> {% endcomment %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for listing in listings %}
+      <tr>
+        <td><b>{{ listing.title }}</b></td>
+        <td><img class="img-url" src="{{ listing.image_url }}" alt="image"></td>
+        <td>{{ listing.starting_bid }}</td>
+        <td>{{ listing.description }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+</head>
+<body>
+
+</body>
+</html>
+{% endblock %}

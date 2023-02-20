@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% load bootstrap5 %}
+
+{% block body %}
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      {% comment %} mandatory modelform fields {% endcomment %}
+      <h1>{{ listing.title }}</h1>
+      <p><b>Current bid</b>: {{ listing.starting_bid }}</p>
+      {% comment %} optional fields {% endcomment %}
+      {% for key, value in listing.items %}
+        {% if value == '' %}
+          {% with listing.value as '' %}
+            <p>{{ key }}: {{ value }}</p>
+          {% endwith %}
+        {% endif %}
+      {% endfor %}
+      {% if listing.image_url != '' %}
+       <img src="{{ listing.image_url }}" alt="{{ listing.title }}" class="img-fluid">
+      {% else %}
+        <p><b>No image available</b></p>
+      {% endif %}
+      <p>{{ listing.description }}</p>
+      <p><b>Details</b></p>
+      <ul>
+        <li>Posted by: {{ listing.user }}</li>
+        <li>Category: {{ listing.category }}</li>
+      </ul>
+      {% comment %} <p>Posted on: {{ listing.date }}</p> {% endcomment %}
+      {% comment %} <p>Expires on: {{ listing.expires }}</p> {% endcomment %}
+      {% comment %} <p>Active: {{ listing.active }}</p> {% endcomment %}
+      {% comment %} <p>Watched by: {{ listing.watched_by }}</p> {% endcomment %}
+      {% comment %} <p>Number of bids: {{ listing.num_bids }}</p> {% endcomment %}
+      {% comment %} <p>Number of watchers: {{ listing.num_watchers }}</p> {% endcomment %}
+    </div>
+  </div>
+</div>
+{% endblock %}
