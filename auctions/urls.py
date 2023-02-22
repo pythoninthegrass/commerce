@@ -12,6 +12,8 @@ urlpatterns = [
     path("register", views.register, name="register"),
     path("create", views.create_listing, name="create"),
     path("listing/<int:listing_id>", views.listing, name="listing"),
+    path("listing/<int:listing_id>/add_watchlist", views.add_watchlist, name="add_watchlist"),
+    path("listing/<int:listing_id>/remove_watchlist", views.remove_watchlist, name="remove_watchlist"),
     path("watchlist", views.watchlist, name="watchlist"),
     path("categories", views.categories, name="categories"),
     re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),

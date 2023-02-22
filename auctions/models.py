@@ -10,9 +10,16 @@ class User(AbstractUser):
 class Watchlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchlist")
     listing = models.ForeignKey("Listing", on_delete=models.CASCADE, related_name="watchlist")
+    date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.user} {self.listing}"
+
+    def get_absolute_url(self):
+        return reverse("listing", args=[str(self.listing.id)])
+
+    def get_absolute_url_rem(self):
+        return reverse("remove_watchlist", args=[str(self.listing.id)])
 
 
 class Listing(models.Model):
@@ -28,6 +35,9 @@ class Listing(models.Model):
 
     def get_absolute_url(self):
         return reverse("listing", args=[str(self.id)])
+
+    def get_absolute_url_add(self):
+        return reverse("add_watchlist", args=[str(self.id)])
 
 
 class Bid(models.Model):

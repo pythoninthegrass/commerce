@@ -20,16 +20,22 @@
         <th scope="col">Image</th>
         <th scope="col">Price</th>
         <th scope="col">Description</th>
+        <th scope="col">Watchlist</th>
         {% comment %} <th scope="col">Bids</th> {% endcomment %}
       </tr>
     </thead>
     <tbody>
       {% for listing in listings %}
       <tr>
-        <td><b><a href="{{listing.get_absolute_url}}">{{ listing.title }}</a></b></td>
+        <td><b><a href="{{ listing.get_absolute_url }}">{{ listing.title }}</a></b></td>
         <td><img class="img-url" src="{{ listing.image_url }}" alt="image"></td>
         <td>{{ listing.starting_bid }}</td>
         <td>{{ listing.description }}</td>
+        {% if request.user.is_authenticated %}
+          <td><a href="{{ listing.get_absolute_url_add }}">Add to Watchlist</a></td>
+        {% else %}
+          <td><a href="{% url 'login' %}">Add to Watchlist</a></td>
+        {% endif %}
       </tr>
       {% endfor %}
     </tbody>

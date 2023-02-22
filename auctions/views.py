@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
@@ -92,10 +93,37 @@ def categories(request):
     return render(request, "categories.html")
 
 
+@login_required
 def watchlist(request):
-    return render(request, "watchlist.html")
+    user = request.user
+    watchlist = Watchlist.objects.filter(user=user)
+
+    return render(request, "watchlist.html", {
+        "watchlist": watchlist,
+    })
 
 
+@login_required
+def add_watchlist(request, listing_id):
+    user = request.user
+    listing = Listing.objects.get(id=listing_id)
+    if Watchlist.objects.filter(user=user, listing=listing).exists():
+        return HttpResponseRedirect(reverse("watchlist"))
+    else:
+        Watchlist.objects.create(user=user, listing=listing)
+        return HttpResponseRedirect(reverse("watchlist"))
+
+
+@login_required
+def remove_watchlist(request, listing_id):
+    user = request.user
+    listing = Listing.objects.get(id=listing_id)
+    watchlist = Watchlist.objects.filter(user=user, listing=listing)
+    watchlist.delete()
+    return HttpResponseRedirect(reverse("watchlist"))
+
+
+@login_required
 def create_listing(request):
     user = request.user
     if request.method == "POST":

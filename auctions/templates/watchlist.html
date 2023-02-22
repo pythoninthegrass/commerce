@@ -1,3 +1,29 @@
 {% extends "layout.html" %}
 {% load bootstrap5 %}
 
+{% block title %}
+  Watchlist
+{% endblock %}
+
+{% block body %}
+<h1>Watchlist</h1>
+  <div class="container">
+    {% for listing in watchlist %}
+      <div class="row">
+        <div class="col-3">
+          <img src="{{ listing.listing.image_url }}" class="img-fluid">
+        </div>
+        <div>
+          <h2>{{ listing.listing.title }}</h2>
+          <p>{{ listing.listing.description }}</p>
+          <p>Category: {{ listing.listing.category }}</p>
+          <p>Posted by: {{ listing.listing.user }}</p>
+          <a href="{{ listing.get_absolute_url }}" class="btn btn-primary">View Listing</a>
+          <a href="{{ listing.get_absolute_url_rem }}" class="btn btn-primary">Remove Listing</a>
+        </div>
+      </div>
+      <hr>
+    {% endfor %}
+  </div><br>
+  <a href="/">Back</a>
+{% endblock %}
