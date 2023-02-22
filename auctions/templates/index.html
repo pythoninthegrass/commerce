@@ -26,7 +26,7 @@
     <tbody>
       {% for listing in listings %}
       <tr>
-        <td><b>{{ listing.title }}</b></td>
+        <td><b><a href="{{listing.get_absolute_url}}">{{ listing.title }}</a></b></td>
         <td><img class="img-url" src="{{ listing.image_url }}" alt="image"></td>
         <td>{{ listing.starting_bid }}</td>
         <td>{{ listing.description }}</td>
