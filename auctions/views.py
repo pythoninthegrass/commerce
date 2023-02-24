@@ -90,7 +90,17 @@ def register(request):
 
 
 def categories(request):
-    return render(request, "categories.html")
+    categories = Listing.objects.values_list('category', flat=True).distinct()
+    categories = [category for category in categories if category != ""]
+    ids = []
+    for category in categories:
+        ids.append(Listing.objects.filter(category=category).first().id)
+    categories, ids = zip(categories, ids)
+
+    return render(request, "categories.html", {
+        "categories": categories,
+        "ids": ids
+    })
 
 
 @login_required
