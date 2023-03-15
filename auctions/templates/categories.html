@@ -1,11 +1,8 @@
 {% extends "layout.html" %}
 {% load bootstrap5 %}
 
-{% block title %}
-  Categories
-{% endblock %}
-
-{% block body %}
+{% comment %} displays a list of all listing categories. Clicking on the name of any category should take the user to a page that displays all of the active listings in that category. {% endcomment %}
+{% block content %}
   <h1>Categories</h1>
   <ul>
     {% for category in categories %}

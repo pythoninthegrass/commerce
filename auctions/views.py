@@ -13,6 +13,7 @@ def listing(request, listing_id):
     # display starting bid as currency
     currency = "${:,.2f}".format(listing.starting_bid)
     listing.starting_bid = currency
+
     return render(request, "listing.html", {
         "listing": listing,
     })
@@ -92,14 +93,22 @@ def register(request):
 def categories(request):
     categories = Listing.objects.values_list('category', flat=True).distinct()
     categories = [category for category in categories if category != ""]
-    ids = []
-    for category in categories:
-        ids.append(Listing.objects.filter(category=category).first().id)
-    categories, ids = zip(categories, ids)
+    ids = {}
+    # for category in categories:
+    #     ids[category] = Listing.objects.filter(category=category).first().id
+
+    # TODO:return all categories, ids, and urls
+    # extract pages from Listing.objects.all() defined categories
+    all = Listing.objects.all()
+    pages = {}
+    for listing in all:
+        if listing.category != "":
+            pages[listing.category] = listing.category
+            pages[listing.category] = [listing.category, listing.id]
 
     return render(request, "categories.html", {
         "categories": categories,
-        "ids": ids
+        "ids": ids,
     })
 
 

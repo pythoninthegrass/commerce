@@ -40,6 +40,16 @@ class Listing(models.Model):
         return reverse("add_watchlist", args=[str(self.id)])
 
 
+# class Category(models.Model):
+#     name = models.CharField(max_length=64)
+
+#     def __str__(self):
+#         return f"{self.name}"
+
+#     def get_absolute_url(self):
+#         return reverse("category", args=[str(self.id)])
+
+
 class Bid(models.Model):
     bid = models.IntegerField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bids")
