@@ -93,22 +93,18 @@ def register(request):
 def categories(request):
     categories = Listing.objects.values_list('category', flat=True).distinct()
     categories = [category for category in categories if category != ""]
-    ids = {}
-    # for category in categories:
-    #     ids[category] = Listing.objects.filter(category=category).first().id
-
-    # TODO:return all categories, ids, and urls
-    # extract pages from Listing.objects.all() defined categories
-    all = Listing.objects.all()
-    pages = {}
-    for listing in all:
-        if listing.category != "":
-            pages[listing.category] = listing.category
-            pages[listing.category] = [listing.category, listing.id]
 
     return render(request, "categories.html", {
         "categories": categories,
-        "ids": ids,
+    })
+
+
+def listings_by_category(request, category_name):
+    listing_by_category = Listing.objects.filter(category__exact=category_name)
+
+    return render(request, "listings_by_category.html", {
+        "listings": listing_by_category,
+        "category_name": category_name,
     })
 
 
