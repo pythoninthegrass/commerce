@@ -2,14 +2,19 @@
 {% load bootstrap5 %}
 
 {% comment %} displays a list of all listing categories. Clicking on the name of any category should take the user to a page that displays all of the active listings in that category. {% endcomment %}
-{% block content %}
-  <h1>Categories</h1>
-  <ul>
-    {% comment %} TODO: debug `listings_by_category` @ views.py {% endcomment %}
-    {% for category in categories %}
-      <li>
-        <a href="{% url 'listings-by-category' category %}">{{ category }}</a>
-      </li>
-    {% endfor %}
-  </ul>
+{% block body %}
+<div class="container">
+  <div class="row">
+    <div>
+      <h1>Categories</h1>
+      <ul>
+        {% for category in categories %}
+          <li>
+            <b><a href="{% url 'listings-by-category' category %}">{{ category }}</a></b>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
 {% endblock %}
