@@ -15,6 +15,7 @@ urlpatterns = [
     path("listing/<int:listing_id>/add_watchlist", views.add_watchlist, name="add_watchlist"),
     path("listing/<int:listing_id>/remove_watchlist", views.remove_watchlist, name="remove_watchlist"),
     path("watchlist", views.watchlist, name="watchlist"),
+    path("listings-by-category/<str:category_name>", views.listings_by_category, name="listings-by-caategory"),
     path("categories", views.categories, name="categories"),
     re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
