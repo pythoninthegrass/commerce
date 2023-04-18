@@ -27,7 +27,7 @@ class Listing(models.Model):
     description = models.CharField(max_length=64, blank=True)
     starting_bid = models.FloatField()
     image_url = models.CharField(max_length=100, blank=True)
-    category = models.ForeignKey("Category", on_delete=models.CASCADE, related_name="listings", null=True)
+    category = models.CharField(max_length=64, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="listings", blank=True)
 
     def __str__(self):
