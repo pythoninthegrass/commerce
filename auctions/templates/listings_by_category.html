@@ -1,20 +1,22 @@
 {% extends "layout.html" %}
 {% load bootstrap5 %}
 
-{% comment %} displays a list of all listing categories. Clicking on the name of any category should take the user to a page that displays all of the active listings in that category. {% endcomment %}
 {% block body %}
-<div class="container">
+<div class="container-fluid">
   <div class="row">
-    <div>
-      <h1>Listings by Category</h1>
-      <ul>
-        {% for listing in listings %}
-          <h2>{{ listing.category }}</h2>
-          <li>
-            <b><a href="{{ listing.get_absolute_url }}">{{ listing.title }}</a></b>
-          </li>
-        {% endfor %}
-      </ul>
+    <div class="col">
+      <div>
+        <h1>Listings by Category</h1>
+        <ul>
+          {% for listing in listings %}
+          {% comment %} TODO: list category once, then stop {% endcomment %}
+          {% comment %} <h2>{{ listing.category }}</h2> {% endcomment %}
+            <li>
+              <b><a href="{{ listing.get_absolute_url }}">{{ listing.title }}</a></b>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
   </div>
 </div>
